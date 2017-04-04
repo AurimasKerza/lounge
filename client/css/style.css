@@ -1513,9 +1513,10 @@ kbd {
 }
 
 /**
-  * Tooltips
+  * Tooltips v0.5.3
   * See http://primercss.io/tooltips/
   */
+
 .tooltipped {
 	position: relative;
 }
@@ -1523,12 +1524,11 @@ kbd {
 .tooltipped:after {
 	position: absolute;
 	z-index: 1000000;
-	display: inline-block;
-	visibility: hidden;
-	opacity: 0;
+	display: none;
 	padding: 5px 8px;
 	font: 12px Lato;
 	line-height: 1.2;
+	-webkit-font-smoothing: subpixel-antialiased;
 	color: #fff;
 	text-align: center;
 	text-decoration: none;
@@ -1541,23 +1541,40 @@ kbd {
 	content: attr(aria-label);
 	background: #222;
 	border-radius: 3px;
-	-webkit-font-smoothing: subpixel-antialiased;
-	transition: .2s;
+	opacity: 0;
 }
 
 .tooltipped:before {
 	position: absolute;
 	z-index: 1000001;
-	display: inline-block;
-	visibility: hidden;
-	opacity: 0;
+	display: none;
 	width: 0;
 	height: 0;
 	color: #fff;
 	pointer-events: none;
 	content: "";
 	border: 5px solid transparent;
-	transition: .2s;
+	opacity: 0;
+}
+
+@-webkit-keyframes tooltip-appear {
+	from {
+		opacity: 0;
+	}
+
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes tooltip-appear {
+	from {
+		opacity: 0;
+	}
+
+	to {
+		opacity: 1;
+	}
 }
 
 .tooltipped:hover:before,
@@ -1566,9 +1583,35 @@ kbd {
 .tooltipped:active:after,
 .tooltipped:focus:before,
 .tooltipped:focus:after {
-	visibility: visible;
-	opacity: 1;
+	display: inline-block;
 	text-decoration: none;
+	-webkit-animation-name: tooltip-appear;
+	animation-name: tooltip-appear;
+	-webkit-animation-duration: .1s;
+	animation-duration: .1s;
+	-webkit-animation-fill-mode: forwards;
+	animation-fill-mode: forwards;
+	-webkit-animation-timing-function: ease-in;
+	animation-timing-function: ease-in;
+	-webkit-animation-delay: .4s;
+	animation-delay: .4s;
+}
+
+.tooltipped-no-delay:hover:before,
+.tooltipped-no-delay:hover:after,
+.tooltipped-no-delay:active:before,
+.tooltipped-no-delay:active:after,
+.tooltipped-no-delay:focus:before,
+.tooltipped-no-delay:focus:after {
+	opacity: 1;
+	-webkit-animation: none;
+	animation: none;
+}
+
+.tooltipped-multiline:hover:after,
+.tooltipped-multiline:active:after,
+.tooltipped-multiline:focus:after {
+	display: table-cell;
 }
 
 .tooltipped-s:after,
@@ -1663,6 +1706,56 @@ kbd {
 	bottom: 50%;
 	margin-top: -5px;
 	border-right-color: #222;
+}
+
+.tooltipped-multiline:after {
+	width: -webkit-max-content;
+	width: -moz-max-content;
+	width: max-content;
+	max-width: 250px;
+	word-break: break-word;
+	word-wrap: normal;
+	white-space: pre-line;
+	border-collapse: separate;
+}
+
+.tooltipped-multiline.tooltipped-s:after,
+.tooltipped-multiline.tooltipped-n:after {
+	right: auto;
+	left: 50%;
+	-webkit-transform: translateX(-50%);
+	transform: translateX(-50%);
+}
+
+.tooltipped-multiline.tooltipped-w:after,
+.tooltipped-multiline.tooltipped-e:after {
+	right: 100%;
+}
+
+@media screen and (min-width: 0\0) {
+	.tooltipped-multiline:after {
+		width: 250px;
+	}
+}
+
+.tooltipped-sticky:before,
+.tooltipped-sticky:after {
+	display: inline-block;
+}
+
+.tooltipped-sticky.tooltipped-multiline:after {
+	display: table-cell;
+}
+
+@media only screen and (-webkit-min-device-pixel-ratio: 2),
+	only screen and (min--moz-device-pixel-ratio: 2),
+	only screen and (-moz-min-device-pixel-ratio: 2),
+	only screen and (min-device-pixel-ratio: 2),
+	only screen and (min-resolution: 192dpi),
+	only screen and (min-resolution: 2dppx) {
+	.tooltipped-w:after {
+		margin-right: 4.5px;
+	}
 }
 
 /* End tooltips */
